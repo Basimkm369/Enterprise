@@ -60,108 +60,110 @@ export function RiskDashboard() {
 
         {/* Page Content */}
         <div className="flex-1 overflow-auto p-6">
-          {/* Page Header */}
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-semibold text-foreground">
-              Enterprise Risk Management
-            </h1>
+          <div className="flex flex-col gap-6 w-[1340px] h-[858px]">
+            {/* Page Header */}
+            <div className="flex items-center h-12 gap-6">
+              <h1 className="text-[20px] leading-[1.3] font-semibold text-[#231F20]">
+                Enterprise Risk Management
+              </h1>
 
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-primary" />
-                <span className="text-sm">
-                  <span className="font-semibold">213</span>
-                  <span className="text-muted-foreground ml-1">Open Risks</span>
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-status-escalated" />
-                <span className="text-sm">
-                  <span className="font-semibold">23</span>
-                  <span className="text-muted-foreground ml-1">
-                    High Priority High Priority
+              <div className="flex items-center gap-8 h-12 px-5 py-2 rounded-[24.5px] border border-[#E7E7E7] bg-[#F8F8F8]">
+                <div className="flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-primary" />
+                  <span className="text-sm">
+                    <span className="font-semibold">213</span>
+                    <span className="text-muted-foreground ml-1">Open Risks</span>
                   </span>
-                </span>
-              </div>
+                </div>
 
-              <div className="flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-status-pending" />
-                <span className="text-sm">
-                  <span className="font-semibold">121</span>
-                  <span className="text-muted-foreground ml-1">Threats</span>
-                </span>
+                <div className="flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-status-escalated" />
+                  <span className="text-sm">
+                    <span className="font-semibold">23</span>
+                    <span className="text-muted-foreground ml-1">
+                      High Priority High Priority
+                    </span>
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5 text-status-pending" />
+                  <span className="text-sm">
+                    <span className="font-semibold">121</span>
+                    <span className="text-muted-foreground ml-1">Threats</span>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Tabs */}
-          <div className="flex items-center gap-4 mb-4">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={cn(
-                  "flex items-center gap-2 px-1 py-2 text-sm font-medium transition-colors border-b-2",
-                  activeTab === tab.id
-                    ? "text-primary border-primary"
-                    : "text-muted-foreground border-transparent hover:text-foreground",
-                )}
-              >
-                <span>{tab.label}</span>
-                <span
+            {/* Tabs */}
+            <div className="flex items-center gap-4 border-b border-border">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    "px-1.5 py-0.5 rounded text-xs",
+                    "flex items-center gap-2 px-1 py-2 text-sm font-medium transition-colors border-b-2",
                     activeTab === tab.id
-                      ? "bg-primary/10 text-primary"
-                      : "bg-muted text-muted-foreground",
+                      ? "text-primary border-primary"
+                      : "text-muted-foreground border-transparent hover:text-foreground",
                   )}
                 >
-                  {tab.count}
-                </span>
-              </button>
-            ))}
-          </div>
+                  <span>{tab.label}</span>
+                  <span
+                    className={cn(
+                      "px-1.5 py-0.5 rounded text-xs",
+                      activeTab === tab.id
+                        ? "bg-primary/10 text-primary"
+                        : "bg-muted text-muted-foreground",
+                    )}
+                  >
+                    {tab.count}
+                  </span>
+                </button>
+              ))}
+            </div>
 
-          {/* Toolbar */}
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <input
-                  type="text"
-                  placeholder="Find..."
-                  className="h-9 pl-9 pr-4 w-48 border border-border rounded-md bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1"
-                />
+            {/* Toolbar */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <input
+                    type="text"
+                    placeholder="Find..."
+                    className="h-9 pl-9 pr-4 w-48 border border-border rounded-md bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1"
+                  />
+                </div>
+
+                <button className="h-9 px-4 flex items-center gap-2 border border-border rounded-md bg-card text-sm text-muted-foreground hover:bg-muted transition-colors">
+                  <SlidersHorizontal className="w-4 h-4" />
+                  <span>Filters</span>
+                </button>
+
+                <button className="h-9 px-3 flex items-center gap-2 border border-border rounded-md bg-card text-sm text-muted-foreground hover:bg-muted transition-colors">
+                  <Download className="w-4 h-4" />
+                  <ChevronDown className="w-3 h-3" />
+                </button>
               </div>
 
-              <button className="h-9 px-4 flex items-center gap-2 border border-border rounded-md bg-card text-sm text-muted-foreground hover:bg-muted transition-colors">
-                <SlidersHorizontal className="w-4 h-4" />
-                <span>Filters</span>
-              </button>
-
-              <button className="h-9 px-3 flex items-center gap-2 border border-border rounded-md bg-card text-sm text-muted-foreground hover:bg-muted transition-colors">
-                <Download className="w-4 h-4" />
-                <ChevronDown className="w-3 h-3" />
+              <button className="h-9 px-4 flex items-center gap-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 transition-colors">
+                <Plus className="w-4 h-4" />
+                <span>Create</span>
               </button>
             </div>
 
-            <button className="h-9 px-4 flex items-center gap-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 transition-colors">
-              <Plus className="w-4 h-4" />
-              <span>Create</span>
-            </button>
-          </div>
-
-          {/* Table Card */}
-          <div className="bg-card rounded-lg border border-border shadow-sm">
-            <RiskTable />
-            <TablePagination
-              currentPage={currentPage}
-              totalPages={10}
-              totalItems={188}
-              itemsPerPage={15}
-              onPageChange={setCurrentPage}
-            />
+            {/* Table Card */}
+            <div className="bg-card rounded-lg border border-border shadow-sm">
+              <RiskTable />
+              <TablePagination
+                currentPage={currentPage}
+                totalPages={10}
+                totalItems={188}
+                itemsPerPage={15}
+                onPageChange={setCurrentPage}
+              />
+            </div>
           </div>
         </div>
       </main>
