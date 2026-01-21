@@ -101,7 +101,7 @@ const RiskDashboard = () => {
 
         {/* Page Content */}
         <div className="flex-1 overflow-auto p-6">
-          <div className="flex flex-col gap-6 w-[1340px] h-[858px]">
+          <div className="flex flex-col gap-6 w-full max-w-[1240px] mx-auto">
             {/* Page Header */}
             <div className="flex items-center h-12 gap-6">
               <h1 className="text-[20px] leading-[1.3] font-semibold text-[#231F20]">

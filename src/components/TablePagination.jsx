@@ -67,7 +67,7 @@ const TablePagination = ({
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="w-8 h-8 flex items-center justify-center rounded border border-border text-muted-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          className="w-8 h-8 flex items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
@@ -85,7 +85,7 @@ const TablePagination = ({
               key={page}
               onClick={() => onPageChange(page)}
               className={cn(
-                "w-8 h-8 flex items-center justify-center rounded text-sm font-medium transition-colors cursor-pointer",
+                "w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium transition-colors cursor-pointer",
                 currentPage === page
                   ? "bg-primary text-primary-foreground"
                   : "border border-border text-muted-foreground hover:bg-muted",
@@ -99,7 +99,7 @@ const TablePagination = ({
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="w-8 h-8 flex items-center justify-center rounded border border-border text-muted-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          className="w-8 h-8 flex items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
