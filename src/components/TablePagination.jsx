@@ -1,5 +1,5 @@
-import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
-import { cn } from "../lib/utils";
+import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
+import { cn } from '../lib/utils';
 
 const TablePagination = ({
   currentPage,
@@ -7,13 +7,9 @@ const TablePagination = ({
   totalItems,
   itemsPerPage,
   onPageChange,
+  onItemsPerPageChange,
 }) => {
-  const showingStart = totalItems
-    ? (currentPage - 1) * itemsPerPage + 1
-    : 0;
-  const showingEnd = totalItems
-    ? Math.min(currentPage * itemsPerPage, totalItems)
-    : 0;
+  const showingStart = totalItems ? (currentPage - 1) * itemsPerPage + 1 : 0;
 
   const renderPageNumbers = () => {
     const pages = [];
@@ -26,7 +22,7 @@ const TablePagination = ({
       pages.push(1);
 
       if (currentPage > 3) {
-        pages.push("ellipsis");
+        pages.push('ellipsis');
       }
 
       const start = Math.max(2, currentPage - 1);
@@ -39,7 +35,7 @@ const TablePagination = ({
       }
 
       if (currentPage < totalPages - 2) {
-        pages.push("ellipsis");
+        pages.push('ellipsis');
       }
 
       if (!pages.includes(totalPages)) {
@@ -55,9 +51,13 @@ const TablePagination = ({
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <span>Showing {showingStart} to</span>
         <input
-          type="text"
-          value={showingEnd}
-          readOnly
+          type="number"
+          min={1}
+          max={Math.max(1, totalItems)}
+          value={itemsPerPage}
+          onChange={(event) =>
+            onItemsPerPageChange?.(Number(event.target.value))
+          }
           className="w-12 h-8 text-center border border-border rounded bg-card text-foreground"
         />
         <span>of {totalItems} Items</span>
@@ -73,7 +73,7 @@ const TablePagination = ({
         </button>
 
         {renderPageNumbers().map((page, index) =>
-          page === "ellipsis" ? (
+          page === 'ellipsis' ? (
             <span
               key={`ellipsis-${index}`}
               className="w-8 h-8 flex items-center justify-center text-muted-foreground"
@@ -85,10 +85,10 @@ const TablePagination = ({
               key={page}
               onClick={() => onPageChange(page)}
               className={cn(
-                "w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium transition-colors cursor-pointer",
+                'w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium transition-colors cursor-pointer',
                 currentPage === page
-                  ? "bg-primary text-primary-foreground"
-                  : "border border-border text-muted-foreground hover:bg-muted",
+                  ? 'bg-primary text-primary-foreground'
+                  : 'border border-border text-muted-foreground hover:bg-muted',
               )}
             >
               {page}

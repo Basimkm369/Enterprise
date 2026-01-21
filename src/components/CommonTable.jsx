@@ -15,7 +15,7 @@ const ColumnHeader = ({
   return (
     <th
       className={cn(
-        "px-3 py-3 text-left text-xs font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors",
+        "px-3 py-3 text-left text-xs font-medium text-muted-foreground cursor-pointer hover:text-foreground transition-colors border-b border-border border-r border-border last:border-r-0",
         className,
       )}
       onClick={isSortable ? () => onSort(field) : undefined}
@@ -53,9 +53,9 @@ const CommonTable = ({
       : (row, index) => row[rowKey] ?? index;
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full">
-        <thead className="border-b border-border">
+    <div className="overflow-x-auto rounded-lg border border-border">
+      <table className="w-full border-collapse">
+        <thead className="border-b border-border bg-[#F4F4F4]">
           <tr>
             {columns.map((column, index) => (
               <ColumnHeader
@@ -83,7 +83,10 @@ const CommonTable = ({
                     row,
                     index,
                   )}`}
-                  className={column.cellClassName}
+                  className={cn(
+                    "border-b border-border border-r border-border last:border-r-0",
+                    column.cellClassName,
+                  )}
                 >
                   {column.render ? column.render(row) : row[column.field]}
                 </td>

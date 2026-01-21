@@ -122,7 +122,7 @@ const RiskTable = ({ data = [] }) => {
       rowKey={(item) => item.id}
       rowClassName={(item, index) =>
         cn(
-          "border-b border-border hover:bg-muted/50 transition-colors",
+          "hover:bg-muted/50 transition-colors",
           index % 2 === 0 ? "bg-card" : "bg-card",
         )
       }

@@ -19,7 +19,7 @@ const RiskDashboard = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [risks, setRisks] = useState([]);
-  const itemsPerPage = 15;
+  const [itemsPerPage, setItemsPerPage] = useState(15);
 
   const handleOpenCreate = () => {
     setIsCreateOpen(true);
@@ -59,11 +59,12 @@ const RiskDashboard = () => {
   });
 
   const totalItems = filteredRisks.length;
-  const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+  const safeItemsPerPage = Math.max(1, itemsPerPage || 1);
+  const totalPages = Math.max(1, Math.ceil(totalItems / safeItemsPerPage));
   const startIndex = (currentPage - 1) * itemsPerPage;
   const pagedRisks = filteredRisks.slice(
     startIndex,
-    startIndex + itemsPerPage,
+    startIndex + safeItemsPerPage,
   );
 
   useEffect(() => {
@@ -71,6 +72,12 @@ const RiskDashboard = () => {
       setCurrentPage(totalPages);
     }
   }, [currentPage, totalPages]);
+
+  useEffect(() => {
+    if (itemsPerPage < 1) {
+      setItemsPerPage(1);
+    }
+  }, [itemsPerPage]);
 
   const tabs = [
     { id: "all", label: "All", count: risks.length },
@@ -185,8 +192,13 @@ const RiskDashboard = () => {
                     currentPage={currentPage}
                     totalPages={totalPages}
                     totalItems={totalItems}
-                    itemsPerPage={itemsPerPage}
+                    itemsPerPage={safeItemsPerPage}
                     onPageChange={setCurrentPage}
+                    onItemsPerPageChange={(value) => {
+                      if (!Number.isFinite(value)) return;
+                      setItemsPerPage(Math.max(1, Math.floor(value)));
+                      setCurrentPage(1);
+                    }}
                   />
                 </>
               ) : (
