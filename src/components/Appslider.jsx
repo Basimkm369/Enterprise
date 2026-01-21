@@ -1,0 +1,53 @@
+import { cn } from "../lib/utils";
+import {
+  LayoutGrid,
+  Home,
+  FileText,
+  ClipboardList,
+  FolderOpen,
+  MessageSquare,
+  FileBarChart,
+  Settings,
+} from "lucide-react";
+
+const sidebarItems = [
+  { icon: LayoutGrid },
+  { icon: Home },
+  { icon: FileText, active: true, highlight: true },
+  { icon: ClipboardList },
+  { icon: FolderOpen },
+  { icon: MessageSquare },
+  { icon: FileBarChart },
+];
+
+export function AppSidebar() {
+  return (
+    <aside className="w-14 bg-card border-r border-border flex flex-col items-center py-4 shrink-0">
+      <div className="flex flex-col items-center gap-2 flex-1">
+        {sidebarItems.map((item, index) => {
+          const Icon = item.icon;
+          return (
+            <button
+              key={index}
+              className={cn(
+                "w-10 h-10 rounded-lg flex items-center justify-center transition-colors",
+                item.highlight
+                  ? "bg-primary text-primary-foreground"
+                  : item.active
+                  ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                  : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              )}
+            >
+              <Icon className="w-5 h-5" />
+            </button>
+          );
+        })}
+      </div>
+      <div className="flex flex-col items-center gap-2">
+        <button className="w-10 h-10 rounded-lg flex items-center justify-center text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors">
+          <Settings className="w-5 h-5" />
+        </button>
+      </div>
+    </aside>
+  );
+}
