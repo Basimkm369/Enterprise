@@ -22,7 +22,7 @@ const sidebarItems = [
 
 export function AppSidebar() {
   return (
-    <aside className="w-14 bg-card border-r border-border flex flex-col items-center py-4 shrink-0">
+    <aside className="fixed left-0 top-12 h-[calc(100vh-48px)] w-[52px] bg-[#FCFCFC] border-r border-[#D1D1D1] flex flex-col items-center py-4 shrink-0">
       <div className="flex flex-col items-center gap-2 flex-1">
         {sidebarItems.map((item, index) => {
           const Icon = item.icon;
