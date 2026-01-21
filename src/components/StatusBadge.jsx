@@ -31,7 +31,7 @@ const statusConfig = {
   },
 };
 
-export function StatusBadge({ status, className }) {
+const StatusBadge = ({ status, className }) => {
   const config = statusConfig[status];
 
   return (
@@ -45,4 +45,6 @@ export function StatusBadge({ status, className }) {
       {config.label}
     </span>
   );
-}
+};
+
+export default StatusBadge;

@@ -1,13 +1,20 @@
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { cn } from "../lib/utils";
 
-export function TablePagination({
+const TablePagination = ({
   currentPage,
   totalPages,
   totalItems,
   itemsPerPage,
   onPageChange,
-}) {
+}) => {
+  const showingStart = totalItems
+    ? (currentPage - 1) * itemsPerPage + 1
+    : 0;
+  const showingEnd = totalItems
+    ? Math.min(currentPage * itemsPerPage, totalItems)
+    : 0;
+
   const renderPageNumbers = () => {
     const pages = [];
 
@@ -46,10 +53,10 @@ export function TablePagination({
   return (
     <div className="flex items-center justify-between px-4 py-3 border-t border-border">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <span>Showing 1 to</span>
+        <span>Showing {showingStart} to</span>
         <input
           type="text"
-          value={itemsPerPage}
+          value={showingEnd}
           readOnly
           className="w-12 h-8 text-center border border-border rounded bg-card text-foreground"
         />
@@ -60,7 +67,7 @@ export function TablePagination({
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="w-8 h-8 flex items-center justify-center rounded border border-border text-muted-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="w-8 h-8 flex items-center justify-center rounded border border-border text-muted-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
@@ -78,7 +85,7 @@ export function TablePagination({
               key={page}
               onClick={() => onPageChange(page)}
               className={cn(
-                "w-8 h-8 flex items-center justify-center rounded text-sm font-medium transition-colors",
+                "w-8 h-8 flex items-center justify-center rounded text-sm font-medium transition-colors cursor-pointer",
                 currentPage === page
                   ? "bg-primary text-primary-foreground"
                   : "border border-border text-muted-foreground hover:bg-muted",
@@ -92,11 +99,13 @@ export function TablePagination({
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="w-8 h-8 flex items-center justify-center rounded border border-border text-muted-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="w-8 h-8 flex items-center justify-center rounded border border-border text-muted-foreground hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
       </div>
     </div>
   );
-}
+};
+
+export default TablePagination;

@@ -1,32 +1,95 @@
-import { useState } from "react";
-import { AppSidebar } from "./Appslider";
-import { RiskTable } from "./RiskTable";
-import { TablePagination } from "./TablePagination";
+import { useEffect, useState } from "react";
+import AppSidebar from "./Appslider";
+import CommonHeader from "./CommonHeader";
+import CommonNoData from "./CommonNoData";
+import CommonToolbar from "./CommonToolbar";
+import CreateEnterpriseModal from "./CreateEnterpriseModal";
+import RiskTable from "./RiskTable";
+import TablePagination from "./TablePagination";
 import {
-  Search,
-  SlidersHorizontal,
-  Download,
-  ChevronDown,
   Plus,
   FileText,
   AlertTriangle,
-  Bell,
-  RefreshCw,
-  HelpCircle,
-  Grip,
 } from "lucide-react";
 import { cn } from "../lib/utils";
 
-const tabs = [
-  { id: "all", label: "All", count: 133 },
-  { id: "new", label: "New", count: 24 },
-  { id: "under-mitigation", label: "Under Mitigation", count: 33 },
-  { id: "closed", label: "Closed", count: 7 },
-];
-
-export function RiskDashboard() {
+const RiskDashboard = () => {
   const [activeTab, setActiveTab] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [risks, setRisks] = useState([]);
+  const itemsPerPage = 15;
+
+  const handleOpenCreate = () => {
+    setIsCreateOpen(true);
+  };
+
+  const handleCloseCreate = () => {
+    setIsCreateOpen(false);
+  };
+
+  const handleCreateRisk = async (values) => {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+
+    const newRisk = {
+      id: globalThis.crypto?.randomUUID?.() ?? String(Date.now()),
+      ...values,
+    };
+
+    setRisks((prev) => [newRisk, ...prev]);
+  };
+
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const filteredRisks = risks.filter((risk) => {
+    if (!normalizedQuery) return true;
+
+    return [
+      risk.recordNo,
+      risk.description,
+      risk.status,
+      risk.type,
+      risk.phase,
+      risk.department,
+      String(risk.inherentImpact),
+      String(risk.inherentLikelihood),
+    ]
+      .filter(Boolean)
+      .some((value) => String(value).toLowerCase().includes(normalizedQuery));
+  });
+
+  const totalItems = filteredRisks.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const pagedRisks = filteredRisks.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  const tabs = [
+    { id: "all", label: "All", count: risks.length },
+    {
+      id: "new",
+      label: "New",
+      count: risks.filter((risk) => risk.status === "new").length,
+    },
+    {
+      id: "under-mitigation",
+      label: "Under Mitigation",
+      count: risks.filter((risk) => risk.status === "under-mitigation").length,
+    },
+    {
+      id: "closed",
+      label: "Closed",
+      count: risks.filter((risk) => risk.status === "closed").length,
+    },
+  ];
 
   return (
     <div className="flex h-screen bg-background">
@@ -34,29 +97,7 @@ export function RiskDashboard() {
 
       <main className="flex-1 flex flex-col overflow-hidden ml-[52px] pt-12">
         {/* Top Header */}
-        <header className="fixed top-0 left-0 right-0 h-12 border-b border-border bg-[#231F1F] flex items-center justify-between px-6 gap-2 shrink-0 z-30">
-          <div className="h-12 w-[52px] -ml-6 flex items-center justify-center">
-            <button className="h-12 w-[52px] px-4 flex items-center justify-center text-white/80 hover:bg-white/10 transition-colors">
-              <Grip className="w-5 h-5" />
-            </button>
-          </div>
-          <div className="flex items-center gap-3">
-            <button className="w-8 h-8 flex items-center justify-center rounded text-white/80 hover:bg-white/10 transition-colors">
-              <Bell className="w-5 h-5" />
-            </button>
-            <button className="w-8 h-8 flex items-center justify-center rounded text-white/80 hover:bg-white/10 transition-colors">
-              <RefreshCw className="w-5 h-5" />
-            </button>
-            <div className="flex items-center gap-2 text-sm text-white/80">
-              <HelpCircle className="w-4 h-4" />
-              <span>Help</span>
-              <ChevronDown className="w-4 h-4" />
-            </div>
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-medium">
-              U
-            </div>
-          </div>
-        </header>
+        <CommonHeader />
 
         {/* Page Content */}
         <div className="flex-1 overflow-auto p-6">
@@ -103,7 +144,7 @@ export function RiskDashboard() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    "flex items-center gap-2 px-1 py-2 text-sm font-medium transition-colors border-b-2",
+                    "flex items-center gap-2 px-1 py-2 text-sm font-medium transition-colors border-b-2 cursor-pointer",
                     activeTab === tab.id
                       ? "text-primary border-primary"
                       : "text-muted-foreground border-transparent hover:text-foreground",
@@ -125,48 +166,47 @@ export function RiskDashboard() {
             </div>
 
             {/* Toolbar */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <input
-                    type="text"
-                    placeholder="Find..."
-                    className="h-9 pl-9 pr-4 w-48 border border-border rounded-md bg-card text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1"
-                  />
-                </div>
-
-                <button className="h-9 px-4 flex items-center gap-2 border border-border rounded-md bg-card text-sm text-muted-foreground hover:bg-muted transition-colors">
-                  <SlidersHorizontal className="w-4 h-4" />
-                  <span>Filters</span>
-                </button>
-
-                <button className="h-9 px-3 flex items-center gap-2 border border-border rounded-md bg-card text-sm text-muted-foreground hover:bg-muted transition-colors">
-                  <Download className="w-4 h-4" />
-                  <ChevronDown className="w-3 h-3" />
-                </button>
-              </div>
-
-              <button className="h-9 px-4 flex items-center gap-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90 transition-colors">
-                <Plus className="w-4 h-4" />
-                <span>Create</span>
-              </button>
-            </div>
+          <CommonToolbar
+            searchValue={searchQuery}
+            onSearchChange={(event) => setSearchQuery(event.target.value)}
+            onFilterClick={() => {}}
+            onDownloadClick={() => {}}
+            primaryLabel="Enterprise"
+            primaryIcon={<Plus className="w-4 h-4" />}
+            onPrimaryClick={handleOpenCreate}
+          />
 
             {/* Table Card */}
             <div className="bg-card rounded-lg border border-border shadow-sm">
-              <RiskTable />
-              <TablePagination
-                currentPage={currentPage}
-                totalPages={10}
-                totalItems={188}
-                itemsPerPage={15}
-                onPageChange={setCurrentPage}
-              />
+              {filteredRisks.length ? (
+                <>
+                  <RiskTable data={pagedRisks} />
+                  <TablePagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    totalItems={totalItems}
+                    itemsPerPage={itemsPerPage}
+                    onPageChange={setCurrentPage}
+                  />
+                </>
+              ) : (
+                <CommonNoData
+                  title="No enterprise items found"
+                  description="Create a new enterprise item or adjust your search to see results."
+                />
+              )}
             </div>
           </div>
         </div>
       </main>
+
+      <CreateEnterpriseModal
+        isOpen={isCreateOpen}
+        onClose={handleCloseCreate}
+        onCreate={handleCreateRisk}
+      />
     </div>
   );
-}
+};
+
+export default RiskDashboard;

@@ -1,6 +1,6 @@
 import { cn } from "../lib/utils";
 
-export function TypeIndicator({ type, className }) {
+const TypeIndicator = ({ type, className }) => {
   return (
     <div className={cn("flex items-center gap-2", className)}>
       <span
@@ -12,4 +12,6 @@ export function TypeIndicator({ type, className }) {
       <span className="capitalize">{type}</span>
     </div>
   );
-}
+};
+
+export default TypeIndicator;

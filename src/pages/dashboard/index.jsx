@@ -1,4 +1,4 @@
-import { RiskDashboard } from "../../components/RiskDashboard";
+import RiskDashboard from "../../components/RiskDashboard";
 
 const Index = () => {
   return <RiskDashboard />;
