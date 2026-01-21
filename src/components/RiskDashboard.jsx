@@ -1,23 +1,19 @@
-import { useEffect, useState } from "react";
-import AppSidebar from "./Appslider";
-import CommonHeader from "./CommonHeader";
-import CommonNoData from "./CommonNoData";
-import CommonToolbar from "./CommonToolbar";
-import CreateEnterpriseModal from "./CreateEnterpriseModal";
-import RiskTable from "./RiskTable";
-import TablePagination from "./TablePagination";
-import {
-  Plus,
-  FileText,
-  AlertTriangle,
-} from "lucide-react";
-import { cn } from "../lib/utils";
+import { useEffect, useState } from 'react';
+import AppSidebar from './Appslider';
+import CommonHeader from './CommonHeader';
+import CommonNoData from './CommonNoData';
+import CommonToolbar from './CommonToolbar';
+import CreateEnterpriseModal from './CreateEnterpriseModal';
+import RiskTable from './RiskTable';
+import TablePagination from './TablePagination';
+import { Plus, FileText, AlertTriangle } from 'lucide-react';
+import { cn } from '../lib/utils';
 
 const RiskDashboard = () => {
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [risks, setRisks] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(15);
 
@@ -80,21 +76,21 @@ const RiskDashboard = () => {
   }, [itemsPerPage]);
 
   const tabs = [
-    { id: "all", label: "All", count: risks.length },
+    { id: 'all', label: 'All', count: risks.length },
     {
-      id: "new",
-      label: "New",
-      count: risks.filter((risk) => risk.status === "new").length,
+      id: 'new',
+      label: 'New',
+      count: risks.filter((risk) => risk.status === 'new').length,
     },
     {
-      id: "under-mitigation",
-      label: "Under Mitigation",
-      count: risks.filter((risk) => risk.status === "under-mitigation").length,
+      id: 'under-mitigation',
+      label: 'Under Mitigation',
+      count: risks.filter((risk) => risk.status === 'under-mitigation').length,
     },
     {
-      id: "closed",
-      label: "Closed",
-      count: risks.filter((risk) => risk.status === "closed").length,
+      id: 'closed',
+      label: 'Closed',
+      count: risks.filter((risk) => risk.status === 'closed').length,
     },
   ];
 
@@ -120,7 +116,9 @@ const RiskDashboard = () => {
                   <FileText className="w-5 h-5 text-primary" />
                   <span className="text-sm">
                     <span className="font-semibold">213</span>
-                    <span className="text-muted-foreground ml-1">Open Risks</span>
+                    <span className="text-muted-foreground ml-1">
+                      Open Risks
+                    </span>
                   </span>
                 </div>
 
@@ -151,19 +149,19 @@ const RiskDashboard = () => {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    "flex items-center gap-2 px-1 py-2 text-sm font-medium transition-colors border-b-2 cursor-pointer",
+                    'flex items-center gap-2 px-1 py-2 text-sm font-medium transition-colors border-b-2 cursor-pointer',
                     activeTab === tab.id
-                      ? "text-primary border-primary"
-                      : "text-muted-foreground border-transparent hover:text-foreground",
+                      ? 'text-primary border-primary'
+                      : 'text-muted-foreground border-transparent hover:text-foreground',
                   )}
                 >
                   <span>{tab.label}</span>
                   <span
                     className={cn(
-                      "px-1.5 py-0.5 rounded text-xs",
+                      'px-1.5 py-0.5 rounded text-xs',
                       activeTab === tab.id
-                        ? "bg-primary/10 text-primary"
-                        : "bg-muted text-muted-foreground",
+                        ? 'bg-primary/10 text-primary'
+                        : 'bg-muted text-muted-foreground',
                     )}
                   >
                     {tab.count}
@@ -173,15 +171,15 @@ const RiskDashboard = () => {
             </div>
 
             {/* Toolbar */}
-          <CommonToolbar
-            searchValue={searchQuery}
-            onSearchChange={(event) => setSearchQuery(event.target.value)}
-            onFilterClick={() => {}}
-            onDownloadClick={() => {}}
-            primaryLabel="Enterprise"
-            primaryIcon={<Plus className="w-4 h-4" />}
-            onPrimaryClick={handleOpenCreate}
-          />
+            <CommonToolbar
+              searchValue={searchQuery}
+              onSearchChange={(event) => setSearchQuery(event.target.value)}
+              onFilterClick={() => {}}
+              onDownloadClick={() => {}}
+              primaryLabel="Create"
+              primaryIcon={<Plus className="w-4 h-4" />}
+              onPrimaryClick={handleOpenCreate}
+            />
 
             {/* Table Card */}
             <div className="bg-card rounded-lg border border-border shadow-sm">
